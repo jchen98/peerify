@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Messages
+{% endblock %}
+
+{% block main %}
+  <h2>Messages</h2>
+        
+        {% if essay_number >= 1 %}
+        <h1>My Essays</h1>
+            {% for i in range(0, essay_number) %}
+            <div>
+                <div style="display: inline-block; margin-right: 100px;">
+                    <a href="{{ url_for('message_log') }}?number={{ essays[i]['essay_id'] }}"><img src="http://downloadicons.net/sites/default/files/messages-icon-64932.png" alt="Messages Icon" height="125" width="125"></a>
+                </div>
+                <div style="display:inline">
+                    <p style="display: inline-block;"><b>Essay #{{ i + 1 }}</b><br>
+                    <a href="{{ url_for('message_log') }}?number={{ essays[i]['essay_id'] }}">Message Peer</a><br>
+                    Topic: {{ essays[i]['topic'] }} <br>
+                    Submitted On: {{ essays[i]['submitted'] }} <br> 
+                     </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if matched_essays_number >= 1 %}
+        <h1>Matched Essays</h1>
+            {% for i in range(0, matched_essays_number) %}
+            <div>
+                <div style="display: inline-block; margin-right: 100px;">
+                    <a href="{{ url_for('message_log') }}?number={{ matched_essays[i]['essay_id'] }}"><img src="http://icons.iconarchive.com/icons/blackvariant/button-ui-requests-2/1024/MS-Messenger-icon.png" alt="Messages Icon" height="125" width="125"></a>
+                </div>
+                <div style="display:inline">
+                    <p style="display: inline-block;"><b>Essay #{{ i + 1 }}</b><br>
+                    <a href="{{ url_for('message_log') }}?number={{ matched_essays[i]['essay_id'] }}">Message Peer</a><br>
+                    Topic: {{ matched_essays[i]['topic'] }} <br>
+                    Requested Feedback By: <br> {{ matched_essays[i]['date'] }} <br> 
+                     </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+{% endblock %}
+

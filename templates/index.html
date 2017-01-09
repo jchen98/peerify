@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main
+{% endblock %}
+
+{% block main %}
+        
+        <h2>My Essays {{essay_id}} </h2>
+        
+        {% if essay_number >= 1 %}
+            {% for i in range(0, essay_number) %}
+            <div>
+                <div style="display: inline-block; margin-right: 100px;">
+                    <a href="{{url_for('essays')}}?number={{essays[i]['essay_id']}}"><img src="http://perso.ens-lyon.fr/paul.brunet/Images/book.png" alt="Paper Icon" height="125" width="125"></a>
+                </div>
+                <div style="display:inline">
+                    <p style="display: inline-block;"><b>Essay #{{ i+1 }}</b><br>
+                    Topic: {{ essays[i]['topic'] }} <br>
+                    Submitted On: {{ essays[i]['submitted'] }} <br> 
+                    Requested Feedback By: {{ essays[i]['date'] }} <br>
+                    Feedback: {{ essays[i]['feedback'] }} <br>
+                     </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <a href="{{url_for('upload')}}">Upload an essay now!</a>
+        {% endif %}
+        
+{% endblock %}

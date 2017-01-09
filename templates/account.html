@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Account Settings
+{% endblock %}
+
+{% block main %}
+    
+    <div style="display: inline-block; margin-right: 100px;">
+        <img src="http://icons.iconarchive.com/icons/blackvariant/button-ui-system-apps/1024/Contacts-icon.png" alt="Profile Icon" height="250px" width="250px">
+    </div>
+    <div style="display:inline">
+        <p style="display: inline-block;"><font size="8" color="black"><b>Hello, {{ name }}!</b><br><br></font>
+            <a href="http://cs50project-xqc2.cs50.io/password" class="button" style="length:120px;">Change Password</a><br><br>
+            <a href="http://cs50project-xqc2.cs50.io/home" class="button" style="length:120px;">Go Back To Main</a>
+        </p>
+    </div>
+           
+{% endblock %}
+
+

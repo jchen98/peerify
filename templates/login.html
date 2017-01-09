@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+    <form action="{{ url_for('login') }}" id="login" method="post">
+        <fieldset>
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="username" placeholder="E-mail" type="text"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" name="password" placeholder="Password" type="password"/>
+            </div>
+            <div class="form-group">
+                <button class="button" type="submit">Log In</button>
+            </div>
+        </fieldset>
+    </form>
+    
+              <!--Javascript Client-Side form validation-->
+     <script>
+            var form = document.getElementById('login');
+            form.onsubmit = function() {
+                if(form.username.value == '')
+                {
+                    alert("Please enter a username.")
+                    return false;
+                }
+                if(form.password.value == '')
+                {
+                    alert("Please enter a password.")
+                    return false;
+                }
+                return true;
+            };
+    </script>
+{% endblock %}

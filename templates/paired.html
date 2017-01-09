@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Paired
+{% endblock %}
+
+{% block main %}
+    Thank you for your submission. <br>
+    Your essay has been paired!
+    <br>
+    <br>
+    It has been added to your "Tasks" page.
+    <a href="{{url_for('tasks')}}">Check it out now.</a>
+{% endblock %}

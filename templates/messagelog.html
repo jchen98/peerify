@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Message Log
+{% endblock %}
+
+{% block main %}
+    <h2>Message Log </h2>
+    {% if messages_length > 0 %}
+        <table style="width:100%">
+        {% for i in range(0, messages_length) %}
+           <tr>
+            <td><b><div style="font-size:20px;">{{ comments[i]['initial'] }}</div></b>
+            <div style="font-size:10px;">{{ comments[i]['datetime'] }}</div>
+            {{ comments[i]['message'] | safe }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+    </table>
+    <form action="{{ url_for('message_log') }}" method="post">
+        <textarea name="essay_text" id="mytextarea"></textarea>
+        <input type="hidden" name="essay_id_value" value="{{ essay_id_value }}">
+    <div class="form-group">
+        <button class="button" type="submit">Send Message</button>
+    </div>
+  </form>
+ 
+{% endblock %}

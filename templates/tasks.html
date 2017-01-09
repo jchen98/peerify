@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Tasks
+{% endblock %}
+
+{% block main %}
+        
+        <h2>Matched Essays to Edit</h2>
+        
+        {% if essay_number >= 1 %}
+            {% for i in range(0, essay_number) %}
+            <div>
+                <div style="display: inline-block; margin-right: 100px;">
+                    <a href="{{ url_for('peer_essays')}}?number={{ matched_essays[i]['essay_id'] }}"><img src="http://perso.ens-lyon.fr/paul.brunet/Images/book.png" alt="Paper Icon" height="125" width="125"></a>
+                </div>
+                <div style="display:inline">
+                    <p style="display: inline-block;"><b>Essay #{{ i + 1 }} </b><br>
+    
+                    <a href="{{ url_for('peer_essays')}}?number={{ matched_essays[i]['essay_id'] }}">Edit Now</a><br>
+                    Topic: {{ matched_essays[i]['topic'] }} <br>
+                    Submitted On: {{ matched_essays[i]['submitted'] }} <br> 
+                    Requested Feedback By: {{ matched_essays[i]['date'] }} <br>
+                     </p>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+{% endblock %}

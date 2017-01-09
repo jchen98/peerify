@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<!--
+	Twenty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Peerify: {% block title %}{% endblock %}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+		<link rel="stylesheet" href="http://assets.annotateit.org/annotator/v1.2.7/annotator.min.css">
+	</head>
+	<body class="no-sidebar">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					{% if session.user_id %}
+					<h1 id="logo"><a href="{{ url_for('index') }}"><img src="https://s27.postimg.org/y2s2w8ur7/peerify_logo.png" alt="Peerify" style="width:100px; height:42px;" ></a></h1>
+					{% else %}
+					<h1 id="logo"><a href="{{ url_for('main') }}"><img src="https://s27.postimg.org/y2s2w8ur7/peerify_logo.png" alt="Peerify" style="width:100px; height:42px;" ></a></h1>
+					{% endif %}
+					<nav id="nav">
+						{% if session.user_id %}
+						<ul>
+							<li class="current"><a href="{{ url_for('index') }}">Main</a></li>
+							<li class="current"><a href="{{ url_for('upload') }}">Upload</a></li>
+							<li class="current"><a href="{{ url_for('tasks') }}">Tasks</a></li>
+							<li class="current"><a href="{{ url_for('messages') }}">Messages</a></li>
+							<li class="current"><a href="{{ url_for('account') }}">Account</a></li>
+							<li class="current"><a href="{{ url_for('logout') }}">Logout</a></li>
+						</ul>
+						{% else %}
+						<ul>
+							<li><a href="{{ url_for('register') }}" class="button special">Register</a></li>
+							<li><a href="{{ url_for('login') }}" class="button special">Login</a></li>
+						</ul>
+						{% endif %}
+					</nav>
+				</header>
+
+			<!-- Main -->
+				<article id="main">
+
+			
+
+					<!-- One -->
+						<section class="wrapper style4 container">
+
+							<!-- Content -->
+								<div class="content">
+									<section>
+										{% block main %}{% endblock %}
+									</section>
+								</div>
+
+						</section>
+
+					
+
+				</article>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li>&copy; Peerify</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollgress.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			<script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+			
+			<!--Annotation functionality scripts-->
+			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+			<script src="http://assets.annotateit.org/annotator/v1.2.7/annotator-full.min.js"></script>
+			
+			
+			<!--Blog-style text box functionality-->
+			<script>
+				tinymce.init({
+		    	selector: '#mytextarea'
+				});
+	  		</script>
+			
+			<!-- queries for the essay_id from address link-->
+			<script>
+			function gup( name, url ) {
+			    if (!url) url = location.href;
+			    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			    var regexS = "[\\?&]"+name+"=([^&#]*)";
+			    var regex = new RegExp( regexS );
+			    var results = regex.exec( url );
+			    return results == null ? null : results[1];
+			}
+			essay_id = gup('number', window.location.href)
+			
+			// annotation and storage functionalities - - - annotatiorjs library
+			
+			 $(function(){
+			 
+			 // initializes a variable to the annotation text box
+			  var annotation = $('#essay_text').annotator();
+			 
+			 // stores the text in the annotation box in the "Store"
+			  annotation.annotator('addPlugin', 'Store', {
+			    prefix: '/annotation',
+			    loadFromSearch : {
+			        page : essay_id
+			    },
+			    annotationData : {
+			        page : essay_id
+			    },
+			    urls: {
+			        create:  '/store',
+			        update:  '/update/:id',
+			        destroy: '/delete/:id',
+			        search:  '/search'
+			    }
+			  });
+			});
+			</script>
+	</body>
+</html>

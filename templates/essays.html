@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Essays
+{% endblock %}
+
+{% block main %}
+    <div id="essay_text">
+   {{ essay_text | safe }}
+   </div>
+{% endblock %}

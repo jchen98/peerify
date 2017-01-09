@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Confirmation
+{% endblock %}
+
+{% block main %}
+<p>Your essay was submitted! You should receive a confirmation email in your inbox soon.</p>
+<a href="{{url_for('index')}}">Click here to return to your essays.</a>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Upload Form
+{% endblock %}
+
+{% block main %}
+    <header class="major">
+    <center><h2>Tell us about your essay!</h2></center>
+    </header>
+  <center>
+  <form action="{{ url_for('upload_form') }}" id="info" method="post">
+    <fieldset>
+            <h1>I would like feedback by:</h1>
+            <div class="form-group">
+                <input name= "date" type= "date"/>
+            </div>
+            <br>
+            <h1>My essay is about: </h1>
+            <div class="form-group">
+                <select name= "user_category">
+                    <option value= "Anthropology">Anthropology</option>
+                    <option value= "Archaeology">Archaeology</option>
+                    <option value= "Art">Art</option>
+                    <option value= "Biology">Biology</option>
+                    <option value= "Cognitive Science">Cognitive Science</option>
+                    <option value= "Computer Science">Computer Science</option>
+                    <option value= "Economics">Economics</option>
+                    <option value= "English">English</option>
+                    <option value= "Environmental Studies">Environmental Science</option>
+                    <option value= "Global Affairs">Global Affairs</option>
+                    <option value= "History">History</option>
+                    <option value= "Linguistics">Linguistics</option>
+                    <option value= "Mathematics">Mathematics</option>
+                    <option value= "Philosophy">Philosophy</option>
+                    <option value= "Political Science">Political Science</option>
+                    <option value= "Psychology">Psychology</option>
+                    <option value= "Religious Studies">Religious Studies</option>
+                    <option value= "Sociology">Sociology</option>
+                    <option value= "Other">Other</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <button class="button" type="submit">Submit</button>
+            </div>
+        </fieldset>
+  </form>
+  </center>
+  
+      <!--Javascript Client-Side form validation, to make sure date and topic aren't empty-->
+     <script>
+            var form = document.getElementById('info');
+            form.onsubmit = function() {
+                if (form.date.value == '')
+                {
+                    alert('Please enter a date');
+                    return false;
+                }
+                else if (form.user_category.value == '')
+                {
+                    alert('Please choose a category');
+                    return false;
+                }
+                return true;
+            };
+    </script>
+{% endblock %}
