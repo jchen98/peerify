@@ -1,0 +1,58 @@
+Peerify - Documentation.txt
+************************************************************************************************
+
+Overview/Purpose: 
+	Peerify is an essay editing resource for users to exchange academic essays and provide mutual feedback in order to improve their writing. The purpose of this web application is to give students further support in whatever style or topic writing they need, through an interactive, accessible, peer-to-peer editing interface. 
+Users register for a Peerify account with their emails, and are able to upload their academic essays from topics on science, the humanities, and all in between. The user is paired with a peer who submits an essay on a similar topic, and the users complete “tasks”-- editing each other’s papers, and giving feedback through highlighting and annotations. For each essay, there is also a “messaging” feature, where users can communicate about specific points of feedback and other clarifications from their peers. 
+
+************************************************************************************************
+Configuration Information:
+Navigate to /project, the folder containing all project files. The following command must be run to install the dependencies for application.py:
+	pip3 install --user -r requirements.txt
+Additionally, run these commands in the terminal:
+	export FLASK_APP=application.py
+	export FLASK_DEBUG=1
+Then, to start the web server, simply run this command:
+	flask run --host=0.0.0.0 --port=8080
+If you would like to see the SQLite tables, you can execute this command in a different terminal:
+	phpliteadmin users.db
+
+************************************************************************************************
+Homepage:
+Welcome to Peerify! If you’d like to learn more about our webapp, click on the “Learn More” button, or scroll down to view a brief summary of our service. Check out the “About Us” link at the bottom of the page to learn about the creators. 
+To get started, click the “Register” button in order to sign up for an account. Make sure to enter both your first and last name, email address, and 2 sets of matching passwords. We will be using your first and last name to create initials (for your anonymity), and using your email address to email you updates about your essays and your tasks, so enter this information with care. Similarly, Click the “Login” button to log back in. Enter the email and password you used to register originally. You should now be on the index page. 
+
+************************************************************************************************
+Index Page:
+On the index page, or the tab “Main”, you’ll see the words “My Essays”. Later, the content inside will be populated by icons, but for now, upload your first essay (see upload)! 
+Once you’ve submitted your first essay, you should see the green book icon, with a litany of information on the right: 
+1.) The essay number. 
+2.) the topic of your essay, based on what option you chose. 
+3.) The date that you submitted your essay into our system. 
+4.) The date that you requested feedback by.  
+5.) “Pending” if your peer has yet to give advice, and “Available” if your peer has already annotated your essay with comments. 
+Click on any of these icons to view your submitted essay.
+
+************************************************************************************************
+Upload:
+Once you are ready to submit your essay, navigate to the “Upload” page. You’ll be greeted by a text box, where you can copy and paste, as well as format the writing that you plan to submit. If you’re planning to copy and paste, don’t fret--your formatting will remain intact after submission! If you are using citations in your essay, hyperlinks will also stay as hyperlinks.
+Hit the “Upload” button when you’re ready; you’ll be brought to a separate page to tell us about your essay! Use the built-in calendar to select the date that you’d like your feedback by, and use the drop-down menu to select the one category out of eighteen, which best characterizes your essay’s subject material (from Anthropology to Sociology).
+After this survey, Peerify will either pair you up with another user on the spot, if there are essays available to be paired, or we will notify you via email when another essay is ready. Either way, be on the lookout for an email confirmation of your work!
+(As part of the configuration information -- if there currently aren’t any essays previously uploaded in the SQLite database, then unfortunately your essay will not be paired. The /project folder is shipped with an empty database, so for demo purposes you will have to create at least two essays of the same topic for them to pair with each other. Note that essays “pair” -- this may result in the edge case where a user uploads two essays of the same topic and they are paired with each other, but in real life we don’t anticipate this happening. Were a lot of people to use this site, the SQLite database would already be pre-populated, and chances are an essay that needs pairing would already be in the database.)
+************************************************************************************************
+Tasks:
+Once you’ve been matched up with another user, get ready to “edit” and “be edited”. Under the “Tasks” tab is an list of the essays that the user is matched up with, with a row of icons on the left side of the screen, and, similar to the index page, a litany of information on the right: 
+1.) The essay number of the paired essay
+2.) A hyperlink, “Edit Now”, that links to your matched essay
+3.) The date that you submitted your essay into our system. 
+4.) The date that you requested feedback by.  
+To edit, click the hyperlink “Edit Now” to be routed to your peer’s essay. There, you can highlight passages of text, and leave annotations. As you do so, the user you are matched with will be able to see these comments, receiving this feedback. At the same time, your peer will edit your essay on his/her tasks screen, where you will be able to then view your own essay with comments. 
+
+************************************************************************************************
+Messages:
+Under the “messages” tab you will find 2 subsections: one with an icon list of the user’s own essays, and a list with the icons of each of the paired essays. Next to each icon is the number of the essay, the topic (Anthropology, Economics, etc), of the essay, the submitted/requested feedback date, as well as a hyperlink reading “message peer”. Clicking on any of these icons, or their hyperlinks, will bring you to the messages log in order to view and submit messages related to that essay with your peer. 
+At the message log page, there is a submission box to format, send and post user messages. On the other end, the other user is able to view these messages and respond in kind. Each post will reveal the initials of your name, as well as the date and time that the message was posted.   
+ 
+ ************************************************************************************************
+ Account Settings:
+Below the  “Account” tab displays your profile information--your name, and a formal black icon. There is also an option to change your password, which requires you to enter your old password, as well as two sets of the password you’d like to change it to. The last button on the “Account” page takes you back to the “Index” page which displays your submitted essays. 

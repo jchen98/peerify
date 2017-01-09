@@ -1,0 +1,58 @@
+Peerify - design.txt
+************************************************************************************************
+
+Homepage:
+For the formatting of the homepage, we used an HTML template “Twenty”, by HTML 5 UP (the folder html5up-twenty in /project contains the files, css, etc.). From there we modified the template in order to suit our needs, designing and embedding our own Peerify logo and symbols to populate the page, as well as adding in relevant content that a potential user might find useful. We wanted to create a well-designed website because in the real world, that would be the driving factor for attracting users to our service. 
+
+************************************************************************************************
+Index Page:
+The “Main” page displays all the essays that the user has submitted. It displays the essays through a SQL query for all entries where the “id” column has the user’s id. The “feedback” for each essay is initially set as “Pending” upon submission. When the essay has feedback available (when there is at least 1 annotation on the essay), then the status changes to “Available.” This is implemented by checking if any of the annotations in the “annotations” table has the essay_id that belongs to the user. 
+
+************************************************************************************************
+Upload: upload.html, upload_form.html
+The upload page includes two major implementation details: a textbox for the user to enter their essay and a survey for a user to answer two questions regarding the essay. The text box editor is implemented using the “TinyMCE” API. In “layout.html”, a script is included that sets a selector as “#mytextarea”. The selector corresponds to the “upload.html” (the location of the textbox editor), where a “textarea” has the id “#mytextarea”. Upon submission of the text in the editor, the URL is redirected to the uploadform.html, which includes two fields: a date for when the user would like a request by and the topic of the essay. These fields will later be considered in the Essay Pairing algorithm.
+
+************************************************************************************************
+E-mail Notifications: 
+We wanted our service to have email notifications for two major purposes -- first, as a way to confirm essay submissions and add a degree of “professionality” to our service, and second, to inform the user when their essay has been paired (as pairing sometimes occurs asynchronously, so it’s important for us to let the user know they should check the site again). We implemented the email notifications using the Flask-Mail API, adapted to our purposes. Flask-Mail has two main classes -- Mail and Message. We configured a Mail object -- using a Gmail account that we created and configured called peerifybot@gmail.com -- to be able to send Message objects to specified email addresses. In addition, we created a mailer module mailer.py to streamline the sending of email notifications, containing the requisite methods to send confirmation emails and pairing emails. When the user uploads an essay, a confirmation email is sent (passing a Message object containing the received date, topic, and text of essay through the Mail object) with sendConfirmationEmail(). When two users/essays are matched, a notification email is sent to both (containing each others’ requested feedback date and topic of essay) with sendPairingEmail(). 
+
+************************************************************************************************
+Essay Pairing: 
+When working on our essay pairing algorithm, we had two major design goals. First, we wanted it to optimize the number of users paired -- we realize that obviously, given a discrete time frame of essay submissions and a limited number of categories to choose from, not all users will be immediately paired, but we wanted users who requested dates earlier get paired earlier, and no inefficiency in pairing (i.e. we don’t have multiple essays that could potentially be paired, but aren’t). Second, because we didn’t have a “proper” server outside of CS50 IDE, we couldn’t have a script that repeatedly ran every specified time interval searching for newly uploaded essays to pair. In other words, we needed an algorithm that could run only once per submitted essay (in the code executed upon submission of the essay) that also paired efficiently. Our essay pairing algorithm runs immediately after an essay is submitted and works as follows:
+1. Immediately try to pair submitted essay with a suitable essay currently unpaired in the database.
+	a. Look up all unpaired essays that are the same topic as the submitted essay (we decided to pair together essays that were of the same topic because we decided that if a user could write an essay on a topic, she would probably also be qualified to give feedback on that topic)
+		i. If there are no other unpaired essays, go to #2
+	b. From the list of suitable unpaired essays, choose the essay that needs feedback the soonest to pair with (this is kind of like a “greedy” algorithm that ensures that the greatest possible number of users will get feedback for their essays before their requested feedback date -- since essays that need feedback sooner are looked at first). Set each essays peer_id (id of user who is reading essay) and peer_essay_id (id of paired essay) for later reference, return paired landing page, and send notification email.
+2. Otherwise, if there are no other suitable unpaired essays, insert current essay into database as an unpaired essay.
+
+This algorithm is efficient because no more than one user for a given topic will ever be left unpaired. For example, let’s say a student submits an essay on CS. If there is an unpaired essay, he will immediately be paired. Otherwise, he is the only unpaired essay. Then, the next user that submits an essay on CS will be paired with him, again leaving no unpaired essays. Furthermore, since new “information” that may affect the pairing decision comes only when a new essay is submitted, the algorithm only needs to be run once upon submission of a new essay. 
+
+************************************************************************************************
+Annotations: annotator-full.1.2.10
+Annotations are generated using the JavaScript library, “Annotatorjs.” Annoratorjs allows the user to highlight an area of text and provide textbox comments. The code of the library is found in “templates” --> “annotator-full.1.2.10”. We attached the Javascript scripts in “layout.html.” While all routes (creating/updating/deleting/loading) of the Annotator must be implemented in Flask in order for certain routes to  work, only creating and loading annotations are properly working. As a result of how we implemented creating and loading annotations using our database, it is difficult to implement update and delete. 
+
+*Creating an Annotation:
+When an annotations is created, a JSON is passed into the “annotation” function. The JSON includes the range of highlighted text, the highlighted text itself, and essay_id of the essay. The essay_id is retrieved from the link address via JavaScript in “layout.html”. Then, the JSON is converted into a string to store in the “annotations” table of our database. The essay_id is also entered in another column in the database for later access. 
+
+*Loading Annotations:
+The “search” function loads annotations that are linked to a specific essay_id. When a user clicks on an essay, the link address includes the essay_id. The essay_id serves as an important part of accessing all the associated annotations in the SQL table. Each element of the SQL query is entered into a list so that it can later be returned as a JSON object for Annotatorjs to read.
+
+************************************************************************************************
+Messages:
+The “Messages” function consists largely of a series of SQL commands, storing each submitted message as a cell in our table labeled “messages”. Each cell of the table contains the user_id as well as a unique essay_id, which, inserted to modify a url within a HTML form, brings the user to a unique “message log”. This way, each of the essays submitted has its own channel by which peers can communicate with each other.
+
+Also passed into the HTML form are 2 variables, datetime and initial. The datetime displays when each message is posted on the message log.  The initials are first parsed when the user registers--for example, after a user registers the name “David Malan”, “D. M.” is simultaneously inserted into a “initials” column. The reason we chose to display only initials was to preserve anonymity between Peerify users, while maintaining a certain level of connection between them. We chose to order the messages by datetime, because chronological design was the obvious design for a messaging feature. 
+
+************************************************************************************************
+Account Settings:
+For account settings, we implemented a means of changing a user’s password in case they needed. The rest of our work on this page is just HTML styling and formatting, to polish user experience.
+
+************************************************************************************************
+Database Table:
+We have 1 database entitled “users.db”. Within the database, there are 4 tables: “annotations,” “essays,” “messages,” and “users.” 
+	-Users Table: The table keeps track of all the registered users by listing their unique id, name, initials, e-mail, and hashed password.
+	-Essays Table: The table keeps track of all the essays uploaded. Each essay has a unique essay_id, but it also has an id that links to the user that uploaded it. For each essay, its text, date of requested feedback, submitted date, topic, and status of feedback are recorded. For the Essay Pairing purposes, we included peer_id and peer_essay_id. Peer_id is the peer’s unique user_id and peer_essay_id is the matched essay’s unique id.
+	-Messages Table: Each essay is linked the the Messages table via its unique essay_id. The table also contains the user’s unique_id, message, datetime of comment, and initials. Therefore, we can later load a messages log for each of the essays for users to contact their peers and vice-versa.
+	-Annotations Table: This table primarily serves as a storage area for all the annotation JSON created via the Annotatorjs library. The essay_id is also linked to each annotation created so that we know which essay the annotation is located.
+
+
