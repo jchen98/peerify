@@ -1,5 +1,12 @@
-Flask
-Flask-Session
-Flask-Mail
-passlib
-SQLAlchemy
+blinker==1.4
+click==6.7
+cs50==1.2.4
+Flask==0.12
+Flask-Mail==0.9.1
+Flask-Session==0.3.0
+itsdangerous==0.24
+Jinja2==2.9.4
+MarkupSafe==0.23
+passlib==1.7.0
+SQLAlchemy==1.1.5
+Werkzeug==0.11.15
